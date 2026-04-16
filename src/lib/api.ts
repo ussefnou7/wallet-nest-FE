@@ -1,8 +1,8 @@
 import axios from "axios";
 
-const backendOrigin = (
-  import.meta.env.VITE_BACKEND_URL ?? "http://localhost:7000"
-).replace(/\/$/, "");
+const BASE_URL = import.meta.env.VITE_BACKEND_URL ?? "http://localhost:7000";
+
+const backendOrigin = BASE_URL.replace(/\/$/, "");
 
 // In dev/preview, same-origin requests go through Vite's proxy (see vite.config.ts) to avoid CORS.
 const API_BASE_URL = import.meta.env.DEV
