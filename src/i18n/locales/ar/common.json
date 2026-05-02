@@ -1,0 +1,373 @@
+{
+  "app": {
+    "name": "WalletFlow",
+    "tagline": "مدير المعاملات"
+  },
+  "tabs": {
+    "dashboard": "لوحة التحكم",
+    "wallets": "المحافظ",
+    "transactions": "المعاملات",
+    "users": "المستخدمون",
+    "owners": "المالكون",
+    "tenants": "المستأجرون",
+    "branches": "الفروع",
+    "reports": "التقارير",
+    "plans": "الباقات",
+    "tenantSubscriptions": "اشتراكات المستأجرين",
+    "supportTickets": "تذاكر الدعم",
+    "renewalRequests": "طلبات التجديد"
+  },
+  "common": {
+    "actions": "الإجراءات",
+    "active": "نشط",
+    "all": "الكل",
+    "allTypes": "كل الأنواع",
+    "allWallets": "كل المحافظ",
+    "backToPlans": "العودة إلى الباقات",
+    "balance": "الرصيد",
+    "cancel": "إلغاء",
+    "chooseWallet": "اختر محفظة",
+    "create": "إنشاء",
+    "created": "تاريخ الإنشاء",
+    "delete": "حذف",
+    "description": "الوصف",
+    "edit": "تعديل",
+    "email": "البريد الإلكتروني",
+    "expireDate": "تاريخ الانتهاء",
+    "failed": "فشل",
+    "inactive": "غير نشط",
+    "language": "اللغة",
+    "loading": "جار التحميل...",
+    "login": "تسجيل الدخول",
+    "logout": "تسجيل الخروج",
+    "name": "الاسم",
+    "newPasswordOptional": "كلمة مرور جديدة (اختياري)",
+    "no": "لا",
+    "noTenantFound": "لم يتم العثور على مستأجر.",
+    "number": "الرقم",
+    "password": "كلمة المرور",
+    "phoneNumber": "رقم الهاتف",
+    "plan": "الباقة",
+    "role": "الدور",
+    "save": "حفظ",
+    "selectBranch": "اختر فرعا",
+    "selectPlan": "اختر باقة",
+    "selectTenant": "اختر مستأجرا",
+    "selectWallet": "اختر محفظة",
+    "startDate": "تاريخ البدء",
+    "status": "الحالة",
+    "tenant": "المستأجر",
+    "tenantId": "معرف المستأجر",
+    "type": "النوع",
+    "username": "اسم المستخدم",
+    "view": "عرض",
+    "wallet": "المحفظة",
+    "yes": "نعم",
+    "priority": "الأولوية",
+    "createdAt": "تاريخ الإنشاء"
+  },
+  "auth": {
+    "alreadyHaveAccount": "لديك حساب بالفعل؟",
+    "badCredentials": "بيانات الدخول غير صحيحة",
+    "cannotReachApi": "تعذر الوصول إلى الواجهة البرمجية. هل الخادم يعمل وهل أعدت تشغيل خادم التطوير بعد تغييرات .env؟",
+    "createAccount": "إنشاء حساب",
+    "createAccountLoading": "جار إنشاء الحساب...",
+    "createYourAccount": "أنشئ حسابك",
+    "dontHaveAccount": "ليس لديك حساب؟",
+    "leaveEmptyToCreateNew": "اتركه فارغا لإنشاء جديد",
+    "loginFailed": "فشل تسجيل الدخول",
+    "pleaseTryAgain": "يرجى المحاولة مرة أخرى",
+    "register": "تسجيل",
+    "registrationFailed": "فشل التسجيل",
+    "signIn": "تسجيل الدخول",
+    "signInLoading": "جار تسجيل الدخول...",
+    "signInToAccount": "سجل الدخول إلى حسابك",
+    "systemAdmin": "مدير النظام",
+    "tenantIdOptional": "معرف المستأجر (اختياري)"
+  },
+  "dashboard": {
+    "activeWallets": "المحافظ النشطة",
+    "recentTransactions": "أحدث المعاملات",
+    "title": "مرحبا بعودتك، {{username}}",
+    "totalBalance": "إجمالي الرصيد",
+    "totalCredits": "إجمالي الإيداعات",
+    "totalDebits": "إجمالي السحوبات",
+    "transactionFallback": "معاملة",
+    "noTransactionsYet": "لا توجد معاملات بعد."
+  },
+  "wallets": {
+    "count": "{{count}} محفظة",
+    "createTitle": "إنشاء محفظة",
+    "created": "تم إنشاء المحفظة",
+    "deleted": "تم حذف المحفظة",
+    "failedCreate": "فشل إنشاء المحفظة",
+    "failedDelete": "فشل الحذف",
+    "invalidNumber": "رقم المحفظة غير صحيح",
+    "new": "محفظة جديدة",
+    "required": "الاسم والمستأجر والفرع ونوع المحفظة مطلوبة",
+    "balanceRequired": "الرصيد مطلوب",
+    "selectType": "اختر نوع المحفظة",
+    "tenantLabel": "المستأجر: {{value}}",
+    "typeLabel": "النوع: {{value}}",
+    "walletType": "نوع المحفظة",
+    "columns": {
+      "name": "الاسم",
+      "number": "الرقم",
+      "balance": "الرصيد",
+      "status": "الحالة"
+    }
+  },
+  "transactions": {
+    "byUser": "بواسطة المستخدم",
+    "cash": "معاملة نقدية",
+    "created": "تم إنشاء المعاملة",
+    "createTitle": "إنشاء معاملة",
+    "credit": "إيداع",
+    "debit": "سحب",
+    "failedCreate": "فشل إنشاء المعاملة",
+    "new": "معاملة جديدة",
+    "noFound": "لم يتم العثور على معاملات.",
+    "percent": "النسبة",
+    "transactionPhone": "رقم الهاتف",
+    "unknownUser": "مستخدم غير معروف",
+    "unknownWallet": "محفظة غير معروفة",
+    "wallet": "المحفظة",
+    "columns": {
+      "amount": "المبلغ",
+      "date": "التاريخ",
+      "description": "الوصف",
+      "percent": "النسبة",
+      "type": "النوع",
+      "wallet": "المحفظة"
+    }
+  },
+  "tenants": {
+    "count": "{{count}} مستأجر",
+    "created": "تم إنشاء المستأجر",
+    "deleted": "تم حذف المستأجر",
+    "createTitle": "إنشاء مستأجر",
+    "editTitle": "تعديل المستأجر",
+    "new": "مستأجر جديد",
+    "updated": "تم تحديث المستأجر"
+  },
+  "supportTickets": {
+    "noFound": "لم يتم العثور على تذاكر الدعم.",
+    "loadError": "فشل تحميل تذاكر الدعم: {{message}}",
+    "resolvedSuccess": "تم حل التذكرة بنجاح.",
+    "resolve": "حل",
+    "createdBy": "تم الإنشاء بواسطة",
+    "resolvedAt": "تم الحل في",
+    "priorityLabel": "الأولوية",
+    "statuses": {
+      "open": "مفتوحة",
+      "resolved": "تم حلها"
+    },
+    "priorities": {
+      "low": "منخفضة",
+      "medium": "متوسطة",
+      "high": "عالية"
+    },
+    "columns": {
+      "subject": "الموضوع",
+      "description": "الوصف"
+    }
+  },
+  "renewalRequests": {
+    "noFound": "لم يتم العثور على طلبات التجديد.",
+    "loadError": "فشل تحميل طلبات التجديد: {{message}}",
+    "approvedSuccess": "تم الموافقة على طلب التجديد.",
+    "rejectedSuccess": "تم رفض طلب التجديد.",
+    "approve": "موافقة",
+    "reject": "رفض",
+    "adminNotePrompt": "أضف ملاحظة إدارية اختيارية (اتركها فارغة إذا لم توجد)",
+    "statuses": {
+      "pending": "قيد الانتظار",
+      "approved": "تمت الموافقة",
+      "rejected": "تم الرفض"
+    },
+    "columns": {
+      "phoneNumber": "رقم الهاتف",
+      "amount": "المبلغ",
+      "periodMonths": "المدة (أشهر)",
+      "requestedBy": "مقدم الطلب",
+      "adminNote": "ملاحظة الإدارة"
+    },
+    "reviewedAt": "تمت المراجعة في",
+    "reviewedBy": "تمت المراجعة بواسطة"
+  },
+  "branches": {
+    "count": "{{count}} فرع",
+    "created": "تم إنشاء الفرع",
+    "deleted": "تم حذف الفرع",
+    "createTitle": "إنشاء فرع",
+    "editTitle": "تعديل الفرع",
+    "new": "فرع جديد",
+    "updated": "تم تحديث الفرع",
+    "userCount": "المستخدمون",
+    "walletCount": "المحافظ"
+  },
+  "users": {
+    "count": "{{count}} مستخدم",
+    "created": "تم إنشاء المستخدم",
+    "createTitle": "إنشاء مستخدم",
+    "deleted": "تم حذف المستخدم",
+    "editTitle": "تعديل المستخدم",
+    "failedCreate": "فشل إنشاء المستخدم",
+    "failedDelete": "فشل حذف المستخدم",
+    "failedUpdate": "فشل تحديث المستخدم",
+    "new": "مستخدم جديد",
+    "noneFound": "لم يتم العثور على مستخدمين.",
+    "updated": "تم تحديث المستخدم",
+    "assignBranch": "تعيين فرع",
+    "assignBranchTitle": "تعيين فرع إلى {{username}}",
+    "assignBranchSuccess": "تم تعيين الفرع",
+    "assignBranchFailed": "فشل تعيين الفرع",
+    "unassignBranch": "إلغاء تعيين الفرع",
+    "unassignBranchSuccess": "تم إلغاء تعيين الفرع",
+    "unassignBranchFailed": "فشل إلغاء تعيين الفرع"
+  },
+  "owners": {
+    "count": "{{count}} مالك",
+    "created": "تم إنشاء المالك",
+    "createTitle": "إنشاء مالك",
+    "deleted": "تم حذف المالك",
+    "editTitle": "تعديل المالك",
+    "failedCreate": "فشل إنشاء المالك",
+    "failedDelete": "فشل حذف المالك",
+    "failedUpdate": "فشل تحديث المالك",
+    "new": "مالك جديد",
+    "noneFound": "لم يتم العثور على مالكين.",
+    "searchSelectTenant": "ابحث واختر مستأجرا",
+    "searchTenants": "ابحث في المستأجرين...",
+    "tenantRequired": "المستأجر مطلوب",
+    "updated": "تم تحديث المالك"
+  },
+  "plans": {
+    "confirmDelete": "هل أنت متأكد من حذف هذه الباقة؟ لا يمكن التراجع عن هذا الإجراء.",
+    "count": "{{count}} باقة",
+    "created": "تم إنشاء الباقة",
+    "createTitle": "إنشاء باقة",
+    "deleted": "تم حذف الباقة",
+    "deleteTitle": "حذف الباقة",
+    "detailsTitle": "تفاصيل الباقة",
+    "editTitle": "تعديل الباقة",
+    "failedLoad": "فشل تحميل الباقة",
+    "maxBranches": "الحد الأقصى للفروع",
+    "maxUsers": "الحد الأقصى للمستخدمين",
+    "maxWallets": "الحد الأقصى للمحافظ",
+    "new": "إنشاء باقة",
+    "updated": "تم تحديث الباقة"
+  },
+  "reports": {
+    "runnerTitle": "تشغيل التقارير",
+    "selectWallet": "اختر المحفظة",
+    "tenantProfit": "ربح المستأجر",
+    "totalProfit": "إجمالي الربح",
+    "walletBalance": "رصيد المحفظة",
+    "transactionSummary": {
+      "title": "ملخص العمليات"
+    },
+    "transactionDetails": {
+      "title": "تفاصيل العمليات"
+    },
+    "walletConsumption": {
+      "title": "استهلاك المحافظ"
+    },
+    "profitSummary": {
+      "title": "ملخص الأرباح"
+    },
+    "transactionTimeAggregation": {
+      "title": "تجميع العمليات حسب الوقت"
+    },
+    "fields": {
+      "amount": "المبلغ",
+      "active": "نشط",
+      "branchName": "اسم الفرع",
+      "branchId": "معرف الفرع",
+      "cash": "كاش",
+      "createdByUsername": "تم الإنشاء بواسطة",
+      "createdAt": "تاريخ الإنشاء",
+      "dailyConsumed": "المستهلك اليومي",
+      "dailyLimit": "الحد اليومي",
+      "dailyUsagePercent": "نسبة الاستخدام اليومي",
+      "description": "الوصف",
+      "fromDate": "من تاريخ",
+      "id": "المعرف",
+      "monthlyConsumed": "المستهلك الشهري",
+      "monthlyLimit": "الحد الشهري",
+      "monthlyUsagePercent": "نسبة الاستخدام الشهري",
+      "nearDailyLimit": "قريب من الحد اليومي",
+      "nearMonthlyLimit": "قريب من الحد الشهري",
+      "netAmount": "الصافي",
+      "occurredAt": "وقت العملية",
+      "percent": "النسبة",
+      "phoneNumber": "رقم الهاتف",
+      "period": "الفترة",
+      "report": "التقرير",
+      "tenantId": "معرف المؤسسة",
+      "tenantName": "اسم المؤسسة",
+      "toDate": "إلى تاريخ",
+      "totalCashProfit": "إجمالي ربح الكاش",
+      "totalCredits": "إجمالي الإيداعات",
+      "totalDebits": "إجمالي السحوبات",
+      "totalProfit": "إجمالي الربح",
+      "totalWalletProfit": "إجمالي ربح المحافظ",
+      "transactionCount": "عدد العمليات",
+      "type": "النوع",
+      "updatedAt": "تاريخ التحديث",
+      "walletId": "معرف المحفظة",
+      "walletName": "اسم المحفظة"
+    },
+    "actions": {
+      "exportExcel": "تصدير إكسل",
+      "exportPdf": "تصدير PDF",
+      "run": "تشغيل التقرير",
+      "running": "جار التشغيل..."
+    },
+    "export": {
+      "generatedDate": "تاريخ الإنشاء",
+      "keyColumn": "الحقل",
+      "valueColumn": "القيمة"
+    },
+    "states": {
+      "empty": "لا توجد بيانات للتقرير.",
+      "error": "فشل تحميل التقرير المحدد.",
+      "errorTitle": "تعذر تحميل التقرير",
+      "idle": "اختر تقريرا ثم قم بتشغيله لعرض النتائج."
+    },
+    "options": {
+      "profitSummary": "ملخص الأرباح",
+      "transactionDetails": "تفاصيل المعاملات",
+      "transactionSummary": "ملخص المعاملات",
+      "transactionTimeAggregation": "تجميع المعاملات حسب الوقت",
+      "walletConsumption": "استهلاك المحافظ"
+    },
+    "periods": {
+      "day": "يوم",
+      "hour": "ساعة",
+      "month": "شهر",
+      "week": "أسبوع",
+      "year": "سنة"
+    },
+    "pagination": {
+      "summary": "الصفحة {{current}} من {{total}} • {{count}} سجل"
+    }
+  },
+  "subscriptions": {
+    "assignUpdate": "تعيين / تحديث الاشتراك",
+    "current": "عرض الاشتراك الحالي",
+    "noFound": "لم يتم العثور على اشتراك.",
+    "planId": "معرف الباقة",
+    "updated": "تم تحديث الاشتراك",
+    "update": "تحديث الاشتراك"
+  },
+  "notFound": {
+    "message": "عذرا! الصفحة غير موجودة",
+    "returnHome": "العودة إلى الرئيسية"
+  },
+  "roles": {
+    "OWNER": "مالك",
+    "SYSTEM_ADMIN": "مدير النظام",
+    "USER": "مستخدم"
+  }
+}

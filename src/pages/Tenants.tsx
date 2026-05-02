@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import DashboardLayout from "@/components/DashboardLayout";
 import api from "@/lib/api";
 import type { Tenant } from "@/lib/types";
+import { getFriendlyErrorMessage, mapApiError } from "@/lib/errors";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -11,12 +13,15 @@ import { useToast } from "@/hooks/use-toast";
 import { HiOutlinePlus, HiOutlineTrash } from "react-icons/hi2";
 
 export default function Tenants() {
+  const { t, i18n } = useTranslation();
   const [tenants, setTenants] = useState<Tenant[]>([]);
   const [open, setOpen] = useState(false);
   const [editOpen, setEditOpen] = useState(false);
   const [name, setName] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
   const [editTenantId, setEditTenantId] = useState("");
   const [editName, setEditName] = useState("");
+  const [editPhoneNumber, setEditPhoneNumber] = useState("");
   const [editActive, setEditActive] = useState(true);
   const { toast } = useToast();
 
@@ -26,29 +31,31 @@ export default function Tenants() {
   const handleCreate = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      await api.post("/tenants", { name });
-      toast({ title: "Tenant created" });
+      await api.post("/tenants", { name, phoneNumber });
+      toast({ title: t("tenants.created") });
       setOpen(false);
       setName("");
+      setPhoneNumber("");
       load();
-    } catch {
-      toast({ title: "Failed", variant: "destructive" });
+    } catch (err) {
+      toast({ title: t("common.failed"), description: getFriendlyErrorMessage(mapApiError(err)), variant: "destructive" });
     }
   };
 
   const handleDelete = async (id: string) => {
     try {
       await api.delete(`/tenants/${id}`);
-      toast({ title: "Tenant deleted" });
+      toast({ title: t("tenants.deleted") });
       load();
-    } catch {
-      toast({ title: "Failed", variant: "destructive" });
+    } catch (err) {
+      toast({ title: t("common.failed"), description: getFriendlyErrorMessage(mapApiError(err)), variant: "destructive" });
     }
   };
 
   const openEditDialog = (tenant: Tenant) => {
     setEditTenantId(tenant.id);
     setEditName(tenant.name);
+    setEditPhoneNumber(tenant.phoneNumber || "");
     setEditActive(tenant.active);
     setEditOpen(true);
   };
@@ -56,26 +63,27 @@ export default function Tenants() {
   const handleEdit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      await api.put(`/tenants/${editTenantId}`, { name: editName, active: editActive });
-      toast({ title: "Tenant updated" });
+      await api.put(`/tenants/${editTenantId}`, { name: editName, phoneNumber: editPhoneNumber, active: editActive });
+      toast({ title: t("tenants.updated") });
       setEditOpen(false);
       load();
-    } catch {
-      toast({ title: "Failed", variant: "destructive" });
+    } catch (err) {
+      toast({ title: t("common.failed"), description: getFriendlyErrorMessage(mapApiError(err)), variant: "destructive" });
     }
   };
 
   return (
-    <DashboardLayout title="Tenants">
+    <DashboardLayout title={t("tabs.tenants")}>
       <div className="flex justify-between items-center mb-6">
-        <p className="text-muted-foreground">{tenants.length} tenant(s)</p>
+        <p className="text-muted-foreground">{t("tenants.count", { count: tenants.length })}</p>
         <Dialog open={open} onOpenChange={setOpen}>
-          <DialogTrigger asChild><Button><HiOutlinePlus className="w-4 h-4 mr-2" />New Tenant</Button></DialogTrigger>
+          <DialogTrigger asChild><Button><HiOutlinePlus className="w-4 h-4 me-2" />{t("tenants.new")}</Button></DialogTrigger>
           <DialogContent>
-            <DialogHeader><DialogTitle>Create Tenant</DialogTitle></DialogHeader>
+            <DialogHeader><DialogTitle>{t("tenants.createTitle")}</DialogTitle></DialogHeader>
             <form onSubmit={handleCreate} className="space-y-4">
-              <div><Label>Name</Label><Input value={name} onChange={(e) => setName(e.target.value)} required className="mt-1.5" /></div>
-              <Button type="submit" className="w-full">Create</Button>
+              <div><Label>{t("common.name")}</Label><Input value={name} onChange={(e) => setName(e.target.value)} required className="mt-1.5" /></div>
+              <div><Label>{t("common.phoneNumber")}</Label><Input value={phoneNumber} onChange={(e) => setPhoneNumber(e.target.value)} className="mt-1.5" /></div>
+              <Button type="submit" className="w-full">{t("common.create")}</Button>
             </form>
           </DialogContent>
         </Dialog>
@@ -83,20 +91,22 @@ export default function Tenants() {
       <div className="bg-card rounded-xl border overflow-hidden">
         <table className="w-full">
           <thead><tr className="border-b bg-muted/50">
-            <th className="text-left text-xs font-medium text-muted-foreground p-4">Name</th>
-            <th className="text-left text-xs font-medium text-muted-foreground p-4">Status</th>
-            <th className="text-left text-xs font-medium text-muted-foreground p-4">Created</th>
-            <th className="text-right text-xs font-medium text-muted-foreground p-4">Actions</th>
+            <th className="text-start text-xs font-medium text-muted-foreground p-4">{t("common.name")}</th>
+            <th className="text-start text-xs font-medium text-muted-foreground p-4">{t("common.phoneNumber")}</th>
+            <th className="text-start text-xs font-medium text-muted-foreground p-4">{t("common.status")}</th>
+            <th className="text-start text-xs font-medium text-muted-foreground p-4">{t("common.created")}</th>
+            <th className="text-end text-xs font-medium text-muted-foreground p-4">{t("common.actions")}</th>
           </tr></thead>
           <tbody className="divide-y">
-            {tenants.map((t) => (
-              <tr key={t.id} className="hover:bg-muted/30">
-                <td className="p-4 text-sm font-medium text-foreground">{t.name}</td>
-                <td className="p-4"><span className={`text-xs px-2 py-1 rounded-full ${t.active ? "bg-success/10 text-success" : "bg-destructive/10 text-destructive"}`}>{t.active ? "Active" : "Inactive"}</span></td>
-                <td className="p-4 text-sm text-muted-foreground">{new Date(t.createdAt).toLocaleDateString()}</td>
-                <td className="p-4 text-right space-x-2">
-                  <Button variant="outline" size="sm" onClick={() => openEditDialog(t)}>Edit</Button>
-                  <Button variant="outline" size="sm" onClick={() => handleDelete(t.id)}><HiOutlineTrash className="w-4 h-4" /></Button>
+            {tenants.map((tenant) => (
+              <tr key={tenant.id} className="hover:bg-muted/30">
+                <td className="p-4 text-sm font-medium text-foreground">{tenant.name}</td>
+                <td className="p-4 text-sm text-muted-foreground">{tenant.phoneNumber || "-"}</td>
+                <td className="p-4"><span className={`text-xs px-2 py-1 rounded-full ${tenant.active ? "bg-success/10 text-success" : "bg-destructive/10 text-destructive"}`}>{tenant.active ? t("common.active") : t("common.inactive")}</span></td>
+                <td className="p-4 text-sm text-muted-foreground">{new Date(tenant.createdAt).toLocaleDateString(i18n.language)}</td>
+                <td className="p-4 text-end flex justify-end gap-2">
+                  <Button variant="outline" size="sm" onClick={() => openEditDialog(tenant)}>{t("common.edit")}</Button>
+                  <Button variant="outline" size="sm" onClick={() => handleDelete(tenant.id)}><HiOutlineTrash className="w-4 h-4" /></Button>
                 </td>
               </tr>
             ))}
@@ -105,17 +115,21 @@ export default function Tenants() {
       </div>
       <Dialog open={editOpen} onOpenChange={setEditOpen}>
         <DialogContent>
-          <DialogHeader><DialogTitle>Edit Tenant</DialogTitle></DialogHeader>
+          <DialogHeader><DialogTitle>{t("tenants.editTitle")}</DialogTitle></DialogHeader>
           <form onSubmit={handleEdit} className="space-y-4">
             <div>
-              <Label>Name</Label>
+              <Label>{t("common.name")}</Label>
               <Input value={editName} onChange={(e) => setEditName(e.target.value)} required className="mt-1.5" />
             </div>
+            <div>
+              <Label>{t("common.phoneNumber")}</Label>
+              <Input value={editPhoneNumber} onChange={(e) => setEditPhoneNumber(e.target.value)} className="mt-1.5" />
+            </div>
             <div className="flex items-center justify-between">
-              <Label htmlFor="tenant-active">Active</Label>
+              <Label htmlFor="tenant-active">{t("common.active")}</Label>
               <Switch id="tenant-active" checked={editActive} onCheckedChange={setEditActive} />
             </div>
-            <Button type="submit" className="w-full">Save</Button>
+            <Button type="submit" className="w-full">{t("common.save")}</Button>
           </form>
         </DialogContent>
       </Dialog>

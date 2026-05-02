@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import DashboardLayout from "@/components/DashboardLayout";
 import api from "@/lib/api";
 import type { TenantSubscription, Tenant, Plan } from "@/lib/types";
+import { getFriendlyErrorMessage, mapApiError } from "@/lib/errors";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -10,6 +12,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
 
 export default function TenantSubscription() {
+  const { t } = useTranslation();
   const [tenants, setTenants] = useState<Tenant[]>([]);
   const [plans, setPlans] = useState<Plan[]>([]);
   const [selectedTenantId, setSelectedTenantId] = useState("");
@@ -42,23 +45,23 @@ export default function TenantSubscription() {
     e.preventDefault();
     try {
       await api.put("/tenant-subscriptions/current", { tenantId, planId, startDate, expireDate });
-      toast({ title: "Subscription updated" });
+      toast({ title: t("subscriptions.updated") });
       if (selectedTenantId === tenantId) loadCurrentSub(tenantId);
-    } catch {
-      toast({ title: "Failed", variant: "destructive" });
+    } catch (err) {
+      toast({ title: t("common.failed"), description: getFriendlyErrorMessage(mapApiError(err)), variant: "destructive" });
     }
   };
 
   return (
-    <DashboardLayout title="Tenant Subscription">
+    <DashboardLayout title={t("tabs.tenantSubscriptions")}>
       <div className="space-y-6">
         <Card>
-          <CardHeader><CardTitle>View Current Subscription</CardTitle></CardHeader>
+          <CardHeader><CardTitle>{t("subscriptions.current")}</CardTitle></CardHeader>
           <CardContent>
             <div className="mb-4">
-              <Label>Select Tenant</Label>
+              <Label>{t("common.selectTenant")}</Label>
               <Select value={selectedTenantId} onValueChange={handleTenantChange}>
-                <SelectTrigger className="mt-1.5"><SelectValue placeholder="Select tenant" /></SelectTrigger>
+                <SelectTrigger className="mt-1.5"><SelectValue placeholder={t("common.selectTenant")} /></SelectTrigger>
                 <SelectContent>
                   {tenants.map((t) => <SelectItem key={t.id} value={t.id}>{t.name}</SelectItem>)}
                 </SelectContent>
@@ -66,41 +69,41 @@ export default function TenantSubscription() {
             </div>
             {currentSub ? (
               <div className="space-y-2">
-                <div><strong>Tenant ID:</strong> {currentSub.tenantId}</div>
-                <div><strong>Plan ID:</strong> {currentSub.planId}</div>
-                <div><strong>Start Date:</strong> {currentSub.startDate}</div>
-                <div><strong>Expire Date:</strong> {currentSub.expireDate}</div>
+                <div><strong>{t("common.tenantId")}:</strong> {currentSub.tenantId}</div>
+                <div><strong>{t("subscriptions.planId")}:</strong> {currentSub.planId}</div>
+                <div><strong>{t("common.startDate")}:</strong> {currentSub.startDate}</div>
+                <div><strong>{t("common.expireDate")}:</strong> {currentSub.expireDate}</div>
               </div>
             ) : (
-              <p>No subscription found.</p>
+              <p>{t("subscriptions.noFound")}</p>
             )}
           </CardContent>
         </Card>
         <Card>
-          <CardHeader><CardTitle>Assign / Update Subscription</CardTitle></CardHeader>
+          <CardHeader><CardTitle>{t("subscriptions.assignUpdate")}</CardTitle></CardHeader>
           <CardContent>
             <form onSubmit={handleUpdate} className="space-y-4">
               <div>
-                <Label>Tenant</Label>
+                <Label>{t("common.tenant")}</Label>
                 <Select value={tenantId} onValueChange={setTenantId}>
-                  <SelectTrigger className="mt-1.5"><SelectValue placeholder="Select tenant" /></SelectTrigger>
+                  <SelectTrigger className="mt-1.5"><SelectValue placeholder={t("common.selectTenant")} /></SelectTrigger>
                   <SelectContent>
                     {tenants.map((t) => <SelectItem key={t.id} value={t.id}>{t.name}</SelectItem>)}
                   </SelectContent>
                 </Select>
               </div>
               <div>
-                <Label>Plan</Label>
+                <Label>{t("common.plan")}</Label>
                 <Select value={planId} onValueChange={setPlanId}>
-                  <SelectTrigger className="mt-1.5"><SelectValue placeholder="Select plan" /></SelectTrigger>
+                  <SelectTrigger className="mt-1.5"><SelectValue placeholder={t("common.selectPlan")} /></SelectTrigger>
                   <SelectContent>
                     {plans.map((p) => <SelectItem key={p.id} value={p.id!}>{p.name}</SelectItem>)}
                   </SelectContent>
                 </Select>
               </div>
-              <div><Label>Start Date</Label><Input type="date" value={startDate} onChange={(e) => setStartDate(e.target.value)} required className="mt-1.5" /></div>
-              <div><Label>Expire Date</Label><Input type="date" value={expireDate} onChange={(e) => setExpireDate(e.target.value)} required className="mt-1.5" /></div>
-              <Button type="submit">Update Subscription</Button>
+              <div><Label>{t("common.startDate")}</Label><Input type="date" value={startDate} onChange={(e) => setStartDate(e.target.value)} required className="mt-1.5" /></div>
+              <div><Label>{t("common.expireDate")}</Label><Input type="date" value={expireDate} onChange={(e) => setExpireDate(e.target.value)} required className="mt-1.5" /></div>
+              <Button type="submit">{t("subscriptions.update")}</Button>
             </form>
           </CardContent>
         </Card>

@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import DashboardLayout from "@/components/DashboardLayout";
 import api from "@/lib/api";
 import { extractList, normalizeUser } from "@/lib/managedUserUtils";
 import type { ManagedUser, Tenant } from "@/lib/types";
+import { getFriendlyErrorMessage, mapApiError } from "@/lib/errors";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -16,6 +18,7 @@ import { ChevronsUpDown } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 export default function Owners() {
+  const { t } = useTranslation();
   const [owners, setOwners] = useState<ManagedUser[]>([]);
   const [tenants, setTenants] = useState<Tenant[]>([]);
   const [open, setOpen] = useState(false);
@@ -66,7 +69,7 @@ export default function Owners() {
   const handleCreate = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!createTenantId) {
-      toast({ title: "Tenant is required", variant: "destructive" });
+      toast({ title: t("owners.tenantRequired"), variant: "destructive" });
       return;
     }
     try {
@@ -76,12 +79,12 @@ export default function Owners() {
         role: "OWNER",
         tenantId: createTenantId,
       });
-      toast({ title: "Owner created" });
+      toast({ title: t("owners.created") });
       setOpen(false);
       resetCreate();
       loadOwners();
-    } catch {
-      toast({ title: "Failed to create owner", variant: "destructive" });
+    } catch (err) {
+      toast({ title: t("owners.failedCreate"), description: getFriendlyErrorMessage(mapApiError(err)), variant: "destructive" });
     }
   };
 
@@ -102,28 +105,28 @@ export default function Owners() {
     if (editPassword.trim()) payload.password = editPassword;
     try {
       await api.put(`/users/${editUserId}`, payload);
-      toast({ title: "Owner updated" });
+      toast({ title: t("owners.updated") });
       setEditOpen(false);
       loadOwners();
-    } catch {
-      toast({ title: "Failed to update owner", variant: "destructive" });
+    } catch (err) {
+      toast({ title: t("owners.failedUpdate"), description: getFriendlyErrorMessage(mapApiError(err)), variant: "destructive" });
     }
   };
 
   const handleDelete = async (id: string) => {
     try {
       await api.delete(`/users/${id}`);
-      toast({ title: "Owner deleted" });
+      toast({ title: t("owners.deleted") });
       loadOwners();
-    } catch {
-      toast({ title: "Failed to delete owner", variant: "destructive" });
+    } catch (err) {
+      toast({ title: t("owners.failedDelete"), description: getFriendlyErrorMessage(mapApiError(err)), variant: "destructive" });
     }
   };
 
   return (
-    <DashboardLayout title="Owners">
+    <DashboardLayout title={t("tabs.owners")}>
       <div className="flex justify-between items-center mb-6">
-        <p className="text-muted-foreground">{owners.length} owner(s)</p>
+        <p className="text-muted-foreground">{t("owners.count", { count: owners.length })}</p>
         <Dialog
           open={open}
           onOpenChange={(v) => {
@@ -133,17 +136,17 @@ export default function Owners() {
         >
           <DialogTrigger asChild>
             <Button>
-              <HiOutlinePlus className="w-4 h-4 mr-2" />
-              New Owner
+              <HiOutlinePlus className="w-4 h-4 me-2" />
+              {t("owners.new")}
             </Button>
           </DialogTrigger>
           <DialogContent className="max-w-md">
             <DialogHeader>
-              <DialogTitle>Create Owner</DialogTitle>
+              <DialogTitle>{t("owners.createTitle")}</DialogTitle>
             </DialogHeader>
             <form onSubmit={handleCreate} className="space-y-4">
               <div>
-                <Label>Tenant</Label>
+                <Label>{t("common.tenant")}</Label>
                 <Popover open={tenantPickerOpen} onOpenChange={setTenantPickerOpen}>
                   <PopoverTrigger asChild>
                     <Button
@@ -153,15 +156,15 @@ export default function Owners() {
                       aria-expanded={tenantPickerOpen}
                       className={cn("mt-1.5 w-full justify-between font-normal", !createTenantId && "text-muted-foreground")}
                     >
-                      {selectedTenant ? selectedTenant.name : "Search and select tenant"}
-                      <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                      {selectedTenant ? selectedTenant.name : t("owners.searchSelectTenant")}
+                      <ChevronsUpDown className="ms-2 h-4 w-4 shrink-0 opacity-50" />
                     </Button>
                   </PopoverTrigger>
                   <PopoverContent className="w-[var(--radix-popover-trigger-width)] p-0" align="start">
                     <Command>
-                      <CommandInput placeholder="Search tenants..." />
+                      <CommandInput placeholder={t("owners.searchTenants")} />
                       <CommandList>
-                        <CommandEmpty>No tenant found.</CommandEmpty>
+                        <CommandEmpty>{t("common.noTenantFound")}</CommandEmpty>
                         <CommandGroup>
                           {tenants.map((t) => (
                             <CommandItem
@@ -182,15 +185,15 @@ export default function Owners() {
                 </Popover>
               </div>
               <div>
-                <Label>Username</Label>
+                <Label>{t("common.username")}</Label>
                 <Input value={createUsername} onChange={(e) => setCreateUsername(e.target.value)} required className="mt-1.5" autoComplete="off" />
               </div>
               <div>
-                <Label>Password</Label>
+                <Label>{t("common.password")}</Label>
                 <Input type="password" value={createPassword} onChange={(e) => setCreatePassword(e.target.value)} required minLength={6} className="mt-1.5" autoComplete="new-password" />
               </div>
               <Button type="submit" className="w-full">
-                Create
+                {t("common.create")}
               </Button>
             </form>
           </DialogContent>
@@ -201,17 +204,17 @@ export default function Owners() {
         <table className="w-full">
           <thead>
             <tr className="border-b bg-muted/50">
-              <th className="text-left text-xs font-medium text-muted-foreground p-4">Username</th>
-              <th className="text-left text-xs font-medium text-muted-foreground p-4">Tenant</th>
-              <th className="text-left text-xs font-medium text-muted-foreground p-4">Status</th>
-              <th className="text-right text-xs font-medium text-muted-foreground p-4">Actions</th>
+              <th className="text-start text-xs font-medium text-muted-foreground p-4">{t("common.username")}</th>
+              <th className="text-start text-xs font-medium text-muted-foreground p-4">{t("common.tenant")}</th>
+              <th className="text-start text-xs font-medium text-muted-foreground p-4">{t("common.status")}</th>
+              <th className="text-end text-xs font-medium text-muted-foreground p-4">{t("common.actions")}</th>
             </tr>
           </thead>
           <tbody className="divide-y">
             {owners.length === 0 && (
               <tr>
                 <td colSpan={4} className="p-8 text-center text-muted-foreground text-sm">
-                  No owners found.
+                  {t("owners.noneFound")}
                 </td>
               </tr>
             )}
@@ -227,10 +230,10 @@ export default function Owners() {
                       u.active !== false ? "bg-success/10 text-success" : "bg-destructive/10 text-destructive"
                     }`}
                   >
-                    {u.active !== false ? "Active" : "Inactive"}
+                    {u.active !== false ? t("common.active") : t("common.inactive")}
                   </span>
                 </td>
-                <td className="p-4 text-right space-x-2">
+                <td className="p-4 text-end flex justify-end gap-2">
                   <Button variant="outline" size="sm" onClick={() => openEdit(u)}>
                     <HiOutlinePencil className="w-4 h-4" />
                   </Button>
@@ -247,23 +250,23 @@ export default function Owners() {
       <Dialog open={editOpen} onOpenChange={setEditOpen}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Edit Owner</DialogTitle>
+            <DialogTitle>{t("owners.editTitle")}</DialogTitle>
           </DialogHeader>
           <form onSubmit={handleEdit} className="space-y-4">
             <div>
-              <Label>Username</Label>
+              <Label>{t("common.username")}</Label>
               <Input value={editUsername} onChange={(e) => setEditUsername(e.target.value)} required className="mt-1.5" />
             </div>
             <div>
-              <Label>New password (optional)</Label>
-              <Input type="password" value={editPassword} onChange={(e) => setEditPassword(e.target.value)} minLength={6} className="mt-1.5" placeholder="Leave blank to keep current" autoComplete="new-password" />
+              <Label>{t("common.newPasswordOptional")}</Label>
+              <Input type="password" value={editPassword} onChange={(e) => setEditPassword(e.target.value)} minLength={6} className="mt-1.5" placeholder={t("auth.leaveEmptyToCreateNew")} autoComplete="new-password" />
             </div>
             <div className="flex items-center justify-between">
-              <Label htmlFor="owner-active">Active</Label>
+              <Label htmlFor="owner-active">{t("common.active")}</Label>
               <Switch id="owner-active" checked={editActive} onCheckedChange={setEditActive} />
             </div>
             <Button type="submit" className="w-full">
-              Save
+              {t("common.save")}
             </Button>
           </form>
         </DialogContent>

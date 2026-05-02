@@ -1,4 +1,5 @@
 import axios from "axios";
+import { mapApiError } from "@/lib/errors";
 
 const BASE_URL = import.meta.env.VITE_BACKEND_URL ?? "http://localhost:7000";
 
@@ -14,6 +15,12 @@ const api = axios.create({
   headers: { "Content-Type": "application/json" },
 });
 
+function redirectToLogin() {
+  if (window.location.pathname === "/login") return;
+  window.history.replaceState(null, "", "/login");
+  window.dispatchEvent(new PopStateEvent("popstate"));
+}
+
 api.interceptors.request.use((config) => {
   const token = localStorage.getItem("token");
   if (token) {
@@ -25,16 +32,28 @@ api.interceptors.request.use((config) => {
 api.interceptors.response.use(
   (res) => res,
   (error) => {
-    const status = error.response?.status;
+    const appError = mapApiError(error);
+    const status = appError.status;
+    const code = appError.code;
     const reqUrl = String(error.config?.url ?? "");
     const isAuthAttempt =
       reqUrl.includes("/auth/login") || reqUrl.includes("/auth/register");
-    if (status === 401 && !isAuthAttempt) {
+
+    if (import.meta.env.DEV) {
+      console.error("[api:error]", {
+        code: appError.code,
+        status: appError.status,
+        message: appError.message,
+        traceId: appError.traceId,
+      });
+    }
+
+    if ((status === 401 || code === "UNAUTHORIZED") && !isAuthAttempt) {
       localStorage.removeItem("token");
       localStorage.removeItem("user");
-      window.location.href = "/login";
+      redirectToLogin();
     }
-    return Promise.reject(error);
+    return Promise.reject(appError);
   }
 );
 

@@ -11,11 +11,13 @@ import Wallets from "@/pages/Wallets";
 import Transactions from "@/pages/Transactions";
 import Tenants from "@/pages/Tenants";
 import Branches from "@/pages/Branches";
-import Reports from "@/pages/Reports";
+import ReportsPage from "@/pages/ReportsPage";
 import Users from "@/pages/Users";
 import Owners from "@/pages/Owners";
 import Plans from "@/pages/Plans";
 import PlanDetails from "@/pages/PlanDetails";
+import SupportTickets from "@/pages/SupportTickets";
+import RenewalRequests from "@/pages/RenewalRequests";
 import TenantSubscription from "@/pages/TenantSubscription";
 import NotFound from "@/pages/NotFound";
 
@@ -34,8 +36,10 @@ const App = () => (
             <Route path="/wallets" element={<ProtectedRoute><Wallets /></ProtectedRoute>} />
             <Route path="/transactions" element={<ProtectedRoute><Transactions /></ProtectedRoute>} />
             <Route path="/tenants" element={<ProtectedRoute roles={["SYSTEM_ADMIN"]}><Tenants /></ProtectedRoute>} />
+            <Route path="/support-tickets" element={<ProtectedRoute roles={["SYSTEM_ADMIN"]}><SupportTickets /></ProtectedRoute>} />
+            <Route path="/renewal-requests" element={<ProtectedRoute roles={["SYSTEM_ADMIN"]}><RenewalRequests /></ProtectedRoute>} />
             <Route path="/branches" element={<ProtectedRoute roles={["SYSTEM_ADMIN", "OWNER"]}><Branches /></ProtectedRoute>} />
-            <Route path="/reports" element={<ProtectedRoute roles={["SYSTEM_ADMIN", "OWNER"]}><Reports /></ProtectedRoute>} />
+            <Route path="/reports" element={<ProtectedRoute roles={["SYSTEM_ADMIN", "OWNER"]}><ReportsPage /></ProtectedRoute>} />
             <Route path="/owners" element={<ProtectedRoute roles={["SYSTEM_ADMIN"]}><Owners /></ProtectedRoute>} />
             <Route path="/users" element={<ProtectedRoute roles={["SYSTEM_ADMIN", "OWNER"]}><Users /></ProtectedRoute>} />
             <Route path="/plans" element={<ProtectedRoute roles={["SYSTEM_ADMIN"]}><Plans /></ProtectedRoute>} />

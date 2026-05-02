@@ -1,0 +1,373 @@
+{
+  "app": {
+    "name": "WalletFlow",
+    "tagline": "Transaction Manager"
+  },
+  "tabs": {
+    "dashboard": "Dashboard",
+    "wallets": "Wallets",
+    "transactions": "Transactions",
+    "users": "Users",
+    "owners": "Owners",
+    "tenants": "Tenants",
+    "branches": "Branches",
+    "reports": "Reports",
+    "plans": "Plans",
+    "tenantSubscriptions": "Tenant Subscriptions",
+    "supportTickets": "Support Tickets",
+    "renewalRequests": "Renewal Requests"
+  },
+  "common": {
+    "actions": "Actions",
+    "active": "Active",
+    "all": "All",
+    "allTypes": "All Types",
+    "allWallets": "All Wallets",
+    "backToPlans": "Back to Plans",
+    "balance": "Balance",
+    "cancel": "Cancel",
+    "chooseWallet": "Choose a wallet",
+    "create": "Create",
+    "created": "Created",
+    "delete": "Delete",
+    "description": "Description",
+    "edit": "Edit",
+    "email": "Email",
+    "expireDate": "Expire Date",
+    "failed": "Failed",
+    "inactive": "Inactive",
+    "language": "Language",
+    "loading": "Loading...",
+    "login": "Login",
+    "logout": "Logout",
+    "name": "Name",
+    "newPasswordOptional": "New password (optional)",
+    "no": "No",
+    "noTenantFound": "No tenant found.",
+    "number": "Number",
+    "password": "Password",
+    "phoneNumber": "Phone Number",
+    "plan": "Plan",
+    "role": "Role",
+    "save": "Save",
+    "selectBranch": "Select branch",
+    "selectPlan": "Select plan",
+    "selectTenant": "Select tenant",
+    "selectWallet": "Select wallet",
+    "startDate": "Start Date",
+    "status": "Status",
+    "tenant": "Tenant",
+    "tenantId": "Tenant ID",
+    "type": "Type",
+    "username": "Username",
+    "view": "View",
+    "wallet": "Wallet",
+    "yes": "Yes",
+    "priority": "Priority",
+    "createdAt": "Created At"
+  },
+  "auth": {
+    "alreadyHaveAccount": "Already have an account?",
+    "badCredentials": "Bad credentials",
+    "cannotReachApi": "Cannot reach the API. Is the backend running and is the dev server restarted after .env changes?",
+    "createAccount": "Create account",
+    "createAccountLoading": "Creating account...",
+    "createYourAccount": "Create your account",
+    "dontHaveAccount": "Don't have an account?",
+    "leaveEmptyToCreateNew": "Leave empty to create new",
+    "loginFailed": "Login failed",
+    "pleaseTryAgain": "Please try again",
+    "register": "Register",
+    "registrationFailed": "Registration failed",
+    "signIn": "Sign in",
+    "signInLoading": "Signing in...",
+    "signInToAccount": "Sign in to your account",
+    "systemAdmin": "System Admin",
+    "tenantIdOptional": "Tenant ID (optional)"
+  },
+  "dashboard": {
+    "activeWallets": "Active Wallets",
+    "recentTransactions": "Recent Transactions",
+    "title": "Welcome back, {{username}}",
+    "totalBalance": "Total Balance",
+    "totalCredits": "Total Credits",
+    "totalDebits": "Total Debits",
+    "transactionFallback": "Transaction",
+    "noTransactionsYet": "No transactions yet."
+  },
+  "wallets": {
+    "count": "{{count}} wallet(s)",
+    "createTitle": "Create Wallet",
+    "created": "Wallet created",
+    "deleted": "Wallet deleted",
+    "failedCreate": "Failed to create wallet",
+    "failedDelete": "Failed to delete",
+    "invalidNumber": "Invalid Wallet Number",
+    "new": "New Wallet",
+    "required": "Name, Tenant, Branch, and Wallet Type are required",
+    "balanceRequired": "Balance is required",
+    "selectType": "Select wallet type",
+    "tenantLabel": "Tenant: {{value}}",
+    "typeLabel": "Type: {{value}}",
+    "walletType": "Wallet Type",
+    "columns": {
+      "name": "Name",
+      "number": "Number",
+      "balance": "Balance",
+      "status": "Status"
+    }
+  },
+  "transactions": {
+    "byUser": "By User",
+    "cash": "Cash transaction",
+    "created": "Transaction created",
+    "createTitle": "Create Transaction",
+    "credit": "Credit",
+    "debit": "Debit",
+    "failedCreate": "Failed to create transaction",
+    "new": "New Transaction",
+    "noFound": "No transactions found.",
+    "percent": "Percent",
+    "transactionPhone": "Phone Number",
+    "unknownUser": "Unknown User",
+    "unknownWallet": "Unknown Wallet",
+    "wallet": "Wallet",
+    "columns": {
+      "amount": "Amount",
+      "date": "Date",
+      "description": "Description",
+      "percent": "Percent",
+      "type": "Type",
+      "wallet": "Wallet"
+    }
+  },
+  "tenants": {
+    "count": "{{count}} tenant(s)",
+    "created": "Tenant created",
+    "deleted": "Tenant deleted",
+    "createTitle": "Create Tenant",
+    "editTitle": "Edit Tenant",
+    "new": "New Tenant",
+    "updated": "Tenant updated"
+  },
+  "supportTickets": {
+    "noFound": "No support tickets found.",
+    "loadError": "Failed to load support tickets: {{message}}",
+    "resolvedSuccess": "Ticket resolved successfully.",
+    "resolve": "Resolve",
+    "createdBy": "Created By",
+    "resolvedAt": "Resolved At",
+    "priorityLabel": "Priority",
+    "statuses": {
+      "open": "Open",
+      "resolved": "Resolved"
+    },
+    "priorities": {
+      "low": "Low",
+      "medium": "Medium",
+      "high": "High"
+    },
+    "columns": {
+      "subject": "Subject",
+      "description": "Description"
+    }
+  },
+  "renewalRequests": {
+    "noFound": "No renewal requests found.",
+    "loadError": "Failed to load renewal requests: {{message}}",
+    "approvedSuccess": "Renewal request approved.",
+    "rejectedSuccess": "Renewal request rejected.",
+    "approve": "Approve",
+    "reject": "Reject",
+    "adminNotePrompt": "Add an optional admin note (leave empty if none)",
+    "statuses": {
+      "pending": "Pending",
+      "approved": "Approved",
+      "rejected": "Rejected"
+    },
+    "columns": {
+      "phoneNumber": "Phone Number",
+      "amount": "Amount",
+      "periodMonths": "Period (Months)",
+      "requestedBy": "Requested By",
+      "adminNote": "Admin Note"
+    },
+    "reviewedAt": "Reviewed At",
+    "reviewedBy": "Reviewed By"
+  },
+  "branches": {
+    "count": "{{count}} branch(es)",
+    "created": "Branch created",
+    "deleted": "Branch deleted",
+    "createTitle": "Create Branch",
+    "editTitle": "Edit Branch",
+    "new": "New Branch",
+    "updated": "Branch updated",
+    "userCount": "Users",
+    "walletCount": "Wallets"
+  },
+  "users": {
+    "count": "{{count}} user(s)",
+    "created": "User created",
+    "createTitle": "Create User",
+    "deleted": "User deleted",
+    "editTitle": "Edit User",
+    "failedCreate": "Failed to create user",
+    "failedDelete": "Failed to delete user",
+    "failedUpdate": "Failed to update user",
+    "new": "New User",
+    "noneFound": "No users found.",
+    "updated": "User updated",
+    "assignBranch": "Assign Branch",
+    "assignBranchTitle": "Assign Branch to {{username}}",
+    "assignBranchSuccess": "Branch assigned",
+    "assignBranchFailed": "Failed to assign branch",
+    "unassignBranch": "Unassign Branch",
+    "unassignBranchSuccess": "Branch unassigned",
+    "unassignBranchFailed": "Failed to unassign branch"
+  },
+  "owners": {
+    "count": "{{count}} owner(s)",
+    "created": "Owner created",
+    "createTitle": "Create Owner",
+    "deleted": "Owner deleted",
+    "editTitle": "Edit Owner",
+    "failedCreate": "Failed to create owner",
+    "failedDelete": "Failed to delete owner",
+    "failedUpdate": "Failed to update owner",
+    "new": "New Owner",
+    "noneFound": "No owners found.",
+    "searchSelectTenant": "Search and select tenant",
+    "searchTenants": "Search tenants...",
+    "tenantRequired": "Tenant is required",
+    "updated": "Owner updated"
+  },
+  "plans": {
+    "confirmDelete": "Are you sure you want to delete this plan? This action cannot be undone.",
+    "count": "{{count}} plan(s)",
+    "created": "Plan created",
+    "createTitle": "Create Plan",
+    "deleted": "Plan deleted",
+    "deleteTitle": "Delete Plan",
+    "detailsTitle": "Plan Details",
+    "editTitle": "Edit Plan",
+    "failedLoad": "Failed to load plan",
+    "maxBranches": "Max Branches",
+    "maxUsers": "Max Users",
+    "maxWallets": "Max Wallets",
+    "new": "Create Plan",
+    "updated": "Plan updated"
+  },
+  "reports": {
+    "runnerTitle": "Report Runner",
+    "selectWallet": "Select Wallet",
+    "tenantProfit": "Tenant Profit",
+    "totalProfit": "Total Profit",
+    "walletBalance": "Wallet Balance",
+    "transactionSummary": {
+      "title": "Transaction Summary"
+    },
+    "transactionDetails": {
+      "title": "Transaction Details"
+    },
+    "walletConsumption": {
+      "title": "Wallet Consumption"
+    },
+    "profitSummary": {
+      "title": "Profit Summary"
+    },
+    "transactionTimeAggregation": {
+      "title": "Transaction Time Aggregation"
+    },
+    "fields": {
+      "amount": "Amount",
+      "active": "Active",
+      "branchName": "Branch Name",
+      "branchId": "Branch ID",
+      "cash": "Cash",
+      "createdByUsername": "Created By",
+      "createdAt": "Created At",
+      "dailyConsumed": "Daily Consumed",
+      "dailyLimit": "Daily Limit",
+      "dailyUsagePercent": "Daily Usage %",
+      "description": "Description",
+      "fromDate": "From Date",
+      "id": "ID",
+      "monthlyConsumed": "Monthly Consumed",
+      "monthlyLimit": "Monthly Limit",
+      "monthlyUsagePercent": "Monthly Usage %",
+      "nearDailyLimit": "Near Daily Limit",
+      "nearMonthlyLimit": "Near Monthly Limit",
+      "netAmount": "Net Amount",
+      "occurredAt": "Occurred At",
+      "percent": "Percent",
+      "phoneNumber": "Phone Number",
+      "period": "Period",
+      "report": "Report",
+      "tenantId": "Tenant ID",
+      "tenantName": "Tenant Name",
+      "toDate": "To Date",
+      "totalCashProfit": "Total Cash Profit",
+      "totalCredits": "Total Credits",
+      "totalDebits": "Total Debits",
+      "totalProfit": "Total Profit",
+      "totalWalletProfit": "Total Wallet Profit",
+      "transactionCount": "Transaction Count",
+      "type": "Type",
+      "updatedAt": "Updated At",
+      "walletId": "Wallet ID",
+      "walletName": "Wallet Name"
+    },
+    "actions": {
+      "exportExcel": "Export Excel",
+      "exportPdf": "Export PDF",
+      "run": "Run Report",
+      "running": "Running..."
+    },
+    "export": {
+      "generatedDate": "Generated date",
+      "keyColumn": "Field",
+      "valueColumn": "Value"
+    },
+    "states": {
+      "empty": "No report data found.",
+      "error": "Failed to load the selected report.",
+      "errorTitle": "Could not load report",
+      "idle": "Select a report and run it to see results."
+    },
+    "options": {
+      "profitSummary": "Profit Summary",
+      "transactionDetails": "Transaction Details",
+      "transactionSummary": "Transaction Summary",
+      "transactionTimeAggregation": "Transaction Time Aggregation",
+      "walletConsumption": "Wallet Consumption"
+    },
+    "periods": {
+      "day": "Day",
+      "hour": "Hour",
+      "month": "Month",
+      "week": "Week",
+      "year": "Year"
+    },
+    "pagination": {
+      "summary": "Page {{current}} of {{total}} • {{count}} records"
+    }
+  },
+  "subscriptions": {
+    "assignUpdate": "Assign / Update Subscription",
+    "current": "View Current Subscription",
+    "noFound": "No subscription found.",
+    "planId": "Plan ID",
+    "updated": "Subscription updated",
+    "update": "Update Subscription"
+  },
+  "notFound": {
+    "message": "Oops! Page not found",
+    "returnHome": "Return to Home"
+  },
+  "roles": {
+    "OWNER": "Owner",
+    "SYSTEM_ADMIN": "System Admin",
+    "USER": "User"
+  }
+}

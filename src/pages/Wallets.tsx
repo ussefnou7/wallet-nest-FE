@@ -1,18 +1,21 @@
 import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import DashboardLayout from "@/components/DashboardLayout";
 import { useAuth } from "@/contexts/AuthContext";
 import api from "@/lib/api";
 import type { Wallet } from "@/lib/types";
+import { getFieldError, getFriendlyErrorMessage, mapApiError } from "@/lib/errors";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { useToast } from "@/hooks/use-toast";
-import { HiOutlinePlus, HiOutlineTrash, HiOutlinePencil } from "react-icons/hi2";
+import { HiOutlinePlus, HiOutlineTrash } from "react-icons/hi2";
 
 export default function Wallets() {
   const { user } = useAuth();
+  const { t, i18n } = useTranslation();
   const [wallets, setWallets] = useState<Wallet[]>([]);
   const [tenants, setTenants] = useState<Array<{ id: string; name: string }>>([]);
   const [branches, setBranches] = useState<Array<{ id: string; name: string; tenantId?: string }>>([]);
@@ -25,12 +28,14 @@ export default function Wallets() {
     type: "",
     number: "",
     balance: "",
+    dailyLimit: "",
+    monthlyLimit: "",
   });
   const [numberError, setNumberError] = useState("");
   const { toast } = useToast();
   const canManage = user?.role === "SYSTEM_ADMIN" || user?.role === "OWNER";
 
-  const load = () => api.get("/wallets").then((r) => setWallets(r.data)).catch(() => {});
+  const load = () => api.get("/wallets").then((r) => setWallets(extractList(r.data) as Wallet[])).catch(() => {});
 
   const extractList = (raw: unknown): unknown[] => {
     if (Array.isArray(raw)) return raw;
@@ -105,6 +110,8 @@ export default function Wallets() {
       type: "",
       number: "",
       balance: "",
+      dailyLimit: "",
+      monthlyLimit: "",
     });
     setNumberError("");
   };
@@ -114,15 +121,15 @@ export default function Wallets() {
   const handleCreate = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!form.name || !form.tenantId || !form.branchId || !form.type) {
-      toast({ title: "Name, Tenant, Branch, and Wallet Type are required", variant: "destructive" });
+      toast({ title: t("wallets.required"), variant: "destructive" });
       return;
     }
     if (!validateWalletNumber(form.number)) {
-      setNumberError("Invalid Wallet Number");
+      setNumberError(t("wallets.invalidNumber"));
       return;
     }
     if (!form.balance) {
-      toast({ title: "Balance is required", variant: "destructive" });
+      toast({ title: t("wallets.balanceRequired"), variant: "destructive" });
       return;
     }
 
@@ -134,30 +141,34 @@ export default function Wallets() {
         branchId: form.branchId,
         type: form.type,
         balance: parseFloat(form.balance),
+        dailyLimit: form.dailyLimit ? parseFloat(form.dailyLimit) : null,
+        monthlyLimit: form.monthlyLimit ? parseFloat(form.monthlyLimit) : null,
       });
-      toast({ title: "Wallet created" });
+      toast({ title: t("wallets.created") });
       setOpen(false);
       resetCreateForm();
       load();
-    } catch {
-      toast({ title: "Failed to create wallet", variant: "destructive" });
+    } catch (err) {
+      const fieldError = getFieldError(err, "number");
+      if (fieldError) setNumberError(fieldError);
+      toast({ title: t("wallets.failedCreate"), description: getFriendlyErrorMessage(mapApiError(err)), variant: "destructive" });
     }
   };
 
   const handleDelete = async (id: string) => {
     try {
       await api.delete(`/wallets/${id}`);
-      toast({ title: "Wallet deleted" });
+      toast({ title: t("wallets.deleted") });
       load();
-    } catch {
-      toast({ title: "Failed to delete", variant: "destructive" });
+    } catch (err) {
+      toast({ title: t("wallets.failedDelete"), description: getFriendlyErrorMessage(mapApiError(err)), variant: "destructive" });
     }
   };
 
   return (
-    <DashboardLayout title="Wallets">
+    <DashboardLayout title={t("tabs.wallets")}>
       <div className="flex justify-between items-center mb-6">
-        <p className="text-muted-foreground">{wallets.length} wallet(s)</p>
+        <p className="text-muted-foreground">{t("wallets.count", { count: wallets.length })}</p>
         {canManage && (
           <Dialog
             open={open}
@@ -168,13 +179,13 @@ export default function Wallets() {
             }}
           >
             <DialogTrigger asChild>
-              <Button><HiOutlinePlus className="w-4 h-4 mr-2" />New Wallet</Button>
+              <Button><HiOutlinePlus className="w-4 h-4 me-2" />{t("wallets.new")}</Button>
             </DialogTrigger>
             <DialogContent>
-              <DialogHeader><DialogTitle>Create Wallet</DialogTitle></DialogHeader>
+              <DialogHeader><DialogTitle>{t("wallets.createTitle")}</DialogTitle></DialogHeader>
               <form onSubmit={handleCreate} className="space-y-4">
                 <div>
-                  <Label>Name</Label>
+                  <Label>{t("common.name")}</Label>
                   <Input
                     value={form.name}
                     onChange={(e) => setForm({ ...form, name: e.target.value })}
@@ -183,13 +194,13 @@ export default function Wallets() {
                   />
                 </div>
                 <div>
-                  <Label>Tenant</Label>
+                  <Label>{t("common.tenant")}</Label>
                   <Select
                     value={form.tenantId}
                     onValueChange={(v) => setForm({ ...form, tenantId: v, branchId: "" })}
                   >
                     <SelectTrigger className="mt-1.5">
-                      <SelectValue placeholder="Select tenant" />
+                      <SelectValue placeholder={t("common.selectTenant")} />
                     </SelectTrigger>
                     <SelectContent>
                       {tenants.map((tenant) => (
@@ -199,13 +210,13 @@ export default function Wallets() {
                   </Select>
                 </div>
                 <div>
-                  <Label>Branch</Label>
+                  <Label>{t("tabs.branches")}</Label>
                   <Select
                     value={form.branchId}
                     onValueChange={(v) => setForm({ ...form, branchId: v })}
                   >
                     <SelectTrigger className="mt-1.5">
-                      <SelectValue placeholder="Select branch" />
+                      <SelectValue placeholder={t("common.selectBranch")} />
                     </SelectTrigger>
                     <SelectContent>
                       {branches
@@ -217,13 +228,13 @@ export default function Wallets() {
                   </Select>
                 </div>
                 <div>
-                  <Label>Wallet Type</Label>
+                  <Label>{t("wallets.walletType")}</Label>
                   <Select
                     value={form.type}
                     onValueChange={(v) => setForm({ ...form, type: v })}
                   >
                     <SelectTrigger className="mt-1.5">
-                      <SelectValue placeholder="Select wallet type" />
+                      <SelectValue placeholder={t("wallets.selectType")} />
                     </SelectTrigger>
                     <SelectContent>
                       {walletTypes.map((walletType) => (
@@ -233,7 +244,7 @@ export default function Wallets() {
                   </Select>
                 </div>
                 <div>
-                  <Label>Number</Label>
+                  <Label>{t("wallets.columns.number")}</Label>
                   <Input
                     value={form.number}
                     onChange={(e) => {
@@ -249,7 +260,7 @@ export default function Wallets() {
                   {numberError && <p className="text-sm text-destructive mt-1">{numberError}</p>}
                 </div>
                 <div>
-                  <Label>Balance</Label>
+                  <Label>{t("wallets.columns.balance")}</Label>
                   <Input
                     type="number"
                     step="0.01"
@@ -259,7 +270,27 @@ export default function Wallets() {
                     className="mt-1.5"
                   />
                 </div>
-                <Button type="submit" className="w-full">Create</Button>
+                <div>
+                  <Label>{t("wallets.daily_limit")}</Label>
+                  <Input
+                    type="number"
+                    step="0.01"
+                    value={form.dailyLimit}
+                    onChange={(e) => setForm({ ...form, dailyLimit: e.target.value })}
+                    className="mt-1.5"
+                  />
+                </div>
+                <div>
+                  <Label>{t("wallets.monthly_limit")}</Label>
+                  <Input
+                    type="number"
+                    step="0.01"
+                    value={form.monthlyLimit}
+                    onChange={(e) => setForm({ ...form, monthlyLimit: e.target.value })}
+                    className="mt-1.5"
+                  />
+                </div>
+                <Button type="submit" className="w-full">{t("common.create")}</Button>
               </form>
             </DialogContent>
           </Dialog>
@@ -272,12 +303,12 @@ export default function Wallets() {
             <div className="flex items-center justify-between mb-2">
               <h3 className="font-semibold text-foreground">{w.name}</h3>
               <span className={`text-xs px-2 py-0.5 rounded-full ${w.active ? "bg-success/10 text-success" : "bg-destructive/10 text-destructive"}`}>
-                {w.active ? "Active" : "Inactive"}
+                {w.active ? t("common.active") : t("common.inactive")}
               </span>
             </div>
-            <p className="text-2xl font-bold text-primary mb-3">${w.balance.toLocaleString("en-US", { minimumFractionDigits: 2 })}</p>
-            <p className="text-xs text-muted-foreground mb-1">Tenant: {w.tenantName ?? "—"}</p>
-            <p className="text-xs text-muted-foreground mb-4">Type: {w.type || "—"}</p>
+            <p className="text-2xl font-bold text-primary mb-3">${w.balance.toLocaleString(i18n.language, { minimumFractionDigits: 2 })}</p>
+            <p className="text-xs text-muted-foreground mb-1">{t("wallets.tenantLabel", { value: w.tenantName ?? "—" })}</p>
+            <p className="text-xs text-muted-foreground mb-4">{t("wallets.typeLabel", { value: w.type || "—" })}</p>
             {canManage && (
               <div className="flex gap-2">
                 <Button variant="outline" size="sm" onClick={() => handleDelete(w.id)}>
